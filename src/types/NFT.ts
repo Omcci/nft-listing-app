@@ -1,24 +1,30 @@
-export interface NFTMedia {
-  gateway: string;
-  raw: string;
+export interface NFTImage {
+  cachedUrl: string;
+  thumbnailUrl: string;
+  pngUrl?: string;
+  contentType?: string;
+  size?: number;
 }
 
 export interface NFTContract {
   address: string;
-}
-
-export interface NFTId {
-  tokenId: string;
-  tokenMetadata: {
-    tokenType: string;
-  };
+  name: string;
+  symbol?: string;
+  totalSupply?: string;
+  tokenType: string;
 }
 
 export interface NFT {
   contract: NFTContract;
-  id: NFTId;
-  title?: string;
+  tokenId: string;
+  tokenType: string;
+  name?: string;
   description?: string;
-  metadata?: Record<string, any>;
-  media?: NFTMedia[];
+  image?: NFTImage;
+  collection?: {
+    name: string;
+    slug?: string;
+    externalUrl?: string | null;
+    bannerImageUrl?: string | null;
+  };
 }
