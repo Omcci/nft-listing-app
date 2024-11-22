@@ -26,12 +26,13 @@ export default async function Home() {
               ) : (
                 <p className="text-sm text-gray-500">No image available</p>
               )}
-              <h3 className="text-lg font-semibold mt-4 mb-2 text-gray-900 dark:text-gray-100">
+              <h3 className="text-xl font-black mt-4 mb-2 text-gray-900 dark:text-gray-100">
                 {nft.name || "Untitled NFT"}
               </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-xs text-gray-600 dark:text-gray-400 break-words">
                 Contract: {nft.contract.address}
               </p>
+
             </div>
           ))}
         </div>
