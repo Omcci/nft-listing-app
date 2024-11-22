@@ -6,42 +6,37 @@ export default async function Home() {
   const nfts = await fetchNFTs(ownerAddr);
 
   return (
-    <div style={{ padding: "20px", fontFamily: "Arial" }}>
-      <h1>My NFTs</h1>
+    <div className="p-8 font-sans">
+      <h1 className="text-2xl font-bold mb-6">My NFTs</h1>
       {nfts.length > 0 ? (
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {nfts.map((nft, index) => (
             <div
               key={index}
-              style={{
-                border: "1px solid #ddd",
-                borderRadius: "10px",
-                padding: "10px",
-                width: "200px",
-              }}
+              className="border border-gray-300 rounded-lg p-4 shadow-md bg-white dark:bg-gray-800"
             >
-              {nft.image ? (
+              {nft.image?.cachedUrl ? (
                 <Image
                   src={nft.image.cachedUrl}
                   alt={nft.name || "NFT"}
                   width={200}
                   height={200}
-                  style={{ borderRadius: "10px" }}
+                  className="rounded-lg"
                 />
               ) : (
-                <p>No image available</p>
+                <p className="text-sm text-gray-500">No image available</p>
               )}
-              <h3 style={{ fontSize: "16px", margin: "10px 0" }}>
+              <h3 className="text-lg font-semibold mt-4 mb-2 text-gray-900 dark:text-gray-100">
                 {nft.name || "Untitled NFT"}
               </h3>
-              <p style={{ fontSize: "12px", color: "#666" }}>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
                 Contract: {nft.contract.address}
               </p>
             </div>
           ))}
         </div>
       ) : (
-        <p>No NFTs found.</p>
+        <p className="text-gray-600 dark:text-gray-400">No NFTs found.</p>
       )}
     </div>
   );
