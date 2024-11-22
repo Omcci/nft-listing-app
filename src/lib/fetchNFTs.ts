@@ -21,7 +21,7 @@ export async function fetchNFTs(ownerAddr: string): Promise<NFT[]> {
     if (!response.ok) {
       throw new Error("Failed to fetch NFTs");
     }
-    const data = await response.json();
+    const data: FetchNFTsResponse = await response.json();
     return data.ownedNfts || [];
   } catch (error) {
     console.error("Error fetching NFTs:", error);
