@@ -13,6 +13,7 @@ const nextConfig = {
         pathname: "/ipfs/**",
       },
     ],
+    dangerouslyAllowSVG: true,
   },
 };
 
