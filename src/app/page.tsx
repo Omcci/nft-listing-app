@@ -5,8 +5,6 @@ export default async function Home() {
   const ownerAddr = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045";
   const nfts = await fetchNFTs(ownerAddr);
 
-  console.log(nfts, 'NFTS');
-
   return (
     <div style={{ padding: "20px", fontFamily: "Arial" }}>
       <h1>My NFTs</h1>
