@@ -22,7 +22,12 @@ export async function fetchNFTs(ownerAddr: string): Promise<NFT[]> {
       throw new Error("Failed to fetch NFTs");
     }
     const data: FetchNFTsResponse = await response.json();
-    return data.ownedNfts || [];
+
+    const nftsWithImages = data.ownedNfts.filter(
+      (nft: NFT) => nft.image?.cachedUrl
+    );
+
+    return nftsWithImages || [];
   } catch (error) {
     console.error("Error fetching NFTs:", error);
     return [];
