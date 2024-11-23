@@ -2,7 +2,7 @@ import { fetchNFTs } from "@/lib/fetchNFTs";
 import Image from "next/image";
 
 export default async function Home() {
-  const ownerAddr = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045";
+  const ownerAddr = "0x3f5CE5FBFe3E9af3971dD833D26bA9b5C936f0bE";
   const nfts = await fetchNFTs(ownerAddr);
 
   return (
@@ -21,7 +21,7 @@ export default async function Home() {
                   alt={nft.name || "NFT"}
                   width={200}
                   height={200}
-                  className="rounded-lg"
+                  className="rounded-lg h-auto"
                 />
               ) : (
                 <p className="text-sm text-gray-500">No image available</p>
