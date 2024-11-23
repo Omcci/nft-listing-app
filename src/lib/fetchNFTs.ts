@@ -9,7 +9,7 @@ export interface FetchNFTsResponse {
 export async function fetchNFTs(ownerAddr: string): Promise<NFT[]> {
   const apiKey = process.env.ALCHEMY_API_KEY;
   const baseURL = `https://eth-mainnet.g.alchemy.com/nft/v3/${apiKey}/getNFTsForOwner/`;
-  const fetchURL = `${baseURL}?owner=${ownerAddr}&pageSize=10`;
+  const fetchURL = `${baseURL}?owner=${ownerAddr}&pageSize=200`;
 
   const requestOptions = {
     method: "GET",
