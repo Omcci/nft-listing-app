@@ -1,33 +1,20 @@
 import { NFT } from "@/types/NFT";
 
-export interface FetchNFTsResponse {
-  ownedNfts: NFT[];
-  pageKey?: string;
-  totalCount?: number;
-}
-
 export async function fetchNFTs(ownerAddr: string): Promise<NFT[]> {
-  const apiKey = process.env.ALCHEMY_API_KEY;
-  const baseURL = `https://eth-mainnet.g.alchemy.com/nft/v3/${apiKey}/getNFTsForOwner/`;
-  const fetchURL = `${baseURL}?owner=${ownerAddr}&pageSize=200`;
-
-  const requestOptions = {
-    method: "GET",
-    redirect: "follow" as RequestRedirect,
-  };
+  const fetchURL = `/api/fetchNFTs?ownerAddr=${ownerAddr}`;
 
   try {
-    const response = await fetch(fetchURL, requestOptions);
+    const response = await fetch(fetchURL, { method: "GET" });
+
     if (!response.ok) {
-      throw new Error("Failed to fetch NFTs");
+      const errorText = await response.text();
+      throw new Error(
+        `Failed to fetch NFTs: ${response.status} - ${errorText}`
+      );
     }
-    const data: FetchNFTsResponse = await response.json();
 
-    const nftsWithImages = data.ownedNfts.filter(
-      (nft: NFT) => nft.image?.cachedUrl
-    );
-
-    return nftsWithImages || [];
+    const nfts: NFT[] = await response.json();
+    return nfts || [];
   } catch (error) {
     console.error("Error fetching NFTs:", error);
     return [];

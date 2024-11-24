@@ -1,5 +1,4 @@
-import { FetchNFTsResponse } from "@/lib/fetchNFTs";
-import { NFT } from "@/types/NFT";
+import { FetchNFTsResponse, NFT } from "@/types/NFT";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
