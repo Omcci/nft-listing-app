@@ -28,3 +28,8 @@ export interface NFT {
     bannerImageUrl?: string | null;
   };
 }
+
+export interface FetchNFTsResponse {
+  ownedNfts: NFT[];
+  total: number;
+}
