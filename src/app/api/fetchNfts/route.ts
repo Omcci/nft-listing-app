@@ -13,26 +13,25 @@ export async function GET(request: Request) {
   }
 
   const apiKey = process.env.ALCHEMY_API_KEY;
-  const baseURL = `https://eth-mainnet.g.alchemy.com/nft/v3/${apiKey}/getNFTsForOwner/`;
-  const fetchURL = `${baseURL}?owner=${ownerAddr}&pageSize=200`;
+
+  if (!apiKey) {
+    return NextResponse.json(
+      { error: "Server misconfiguration: API key is missing!" },
+      { status: 500 }
+    );
+  }
+
+  const alchemyUrl = `https://eth-mainnet.g.alchemy.com/nft/v3/${apiKey}/getNFTsForOwner/?owner=${ownerAddr}&pageSize=200`;
 
   try {
-    const response = await fetch(fetchURL, { method: "GET" });
+    const response = await fetch(alchemyUrl);
 
     if (!response.ok) {
-      const errorText = await response.text();
-      return NextResponse.json(
-        { error: `Failed to fetch NFTs: ${errorText}` },
-        { status: response.status }
-      );
+      throw new Error(`Alchemy API responded with ${response.statusText}`);
     }
 
-    const data: FetchNFTsResponse = await response.json();
-    const nftsWithImages = data.ownedNfts.filter(
-      (nft: NFT) => nft.image?.cachedUrl
-    );
-
-    return NextResponse.json(nftsWithImages);
+    const data = await response.json();
+    return NextResponse.json(data);
   } catch (error) {
     console.error("Error in API route:", error);
     return NextResponse.json(
