@@ -1,5 +1,6 @@
 import { Web3Provider } from "@ethersproject/providers";
 import Web3Modal from "web3modal";
+import WalletConnectProvider from "@walletconnect/web3-provider";
 
 export async function walletConnect(): Promise<{
   success: boolean;
@@ -7,7 +8,20 @@ export async function walletConnect(): Promise<{
   message: string;
 }> {
   try {
-    const web3Modal = new Web3Modal();
+    const providerOptions = {
+      walletconnect: {
+        package: WalletConnectProvider,
+        options: {
+          infuraId: "INFURA_ID",
+        },
+      },
+    };
+
+    const web3Modal = new Web3Modal({
+      network: "mainnet",
+      cacheProvider: false,
+      providerOptions,
+    });
     console.log("Opening wallet modal...");
     const connection = await web3Modal.connect();
     const provider = new Web3Provider(connection);
