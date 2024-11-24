@@ -4,42 +4,37 @@ import { fetchNFTs } from "@/lib/fetchNFTs";
 import { NFT } from "@/types/NFT";
 import Image from "next/image";
 import { useState } from "react";
+import WalletConnect from "./components/WalletConnect";
 
 export default function Home() {
   const [ownerAddr, setOwnerAddr] = useState<string>("");
   const [nfts, setNFTs] = useState<NFT[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleFetchNFTs = () => {
-    if (ownerAddr) {
-      setLoading(true);
-      fetchNFTs(ownerAddr).then((nfts) => {
-        setNFTs(nfts);
-        setLoading(false);
-      });
-    }
-  }
+  const handleFetchNFTs = async (address: string) => {
+    setLoading(true);
+    const fetchedNFTs = await fetchNFTs(address);
+    setNFTs(fetchedNFTs);
+    setLoading(false);
+  };
+
+  const handleWalletConnect = (address: string) => {
+    setOwnerAddr(address);
+    handleFetchNFTs(address);
+  };
 
   return (
     <div className="p-8 font-sans">
       <h1 className="text-2xl font-bold mb-6">My NFTs</h1>
-      <div className="flex flex-col sm:flex-row gap-4 mb-6">
-        <input
-          type="text"
-          placeholder="Enter wallet address"
-          className="border rounded-md px-4 py-2 w-full sm:w-2/3"
-          value={ownerAddr}
-          onChange={(e) => setOwnerAddr(e.target.value)}
-        />
-        <button
-          className="bg-blue-500 text-white rounded-md px-4 py-2 hover:bg-blue-600"
-          onClick={handleFetchNFTs}
-          disabled={loading || !ownerAddr}
-        >
-          {loading ? "Loading..." : "Fetch NFTs"}
-        </button>
-      </div>
-      {nfts.length > 0 ? (
+      <WalletConnect onConnect={handleWalletConnect} />
+      {ownerAddr && (
+        <p className="text-gray-700 mt-4">
+          Connected Wallet Address: <span className="font-bold">{ownerAddr}</span>
+        </p>
+      )}
+      {loading ? (
+        <p className="text-blue-500 mt-6">Loading NFTs...</p>
+      ) : nfts.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {nfts.map((nft, index) => (
             <div
